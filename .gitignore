@@ -2,3 +2,9 @@
 *.pyc
 
 node_modules
+
+gameSharingApp/settings.py
+
+# Mac Crap
+*/.DS_Store
+
