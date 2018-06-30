@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import '../../../scss/file.scss';
+
 import Input from "../presentational/Input";
 
 class App extends Component {
@@ -12,12 +14,13 @@ class App extends Component {
 
   render() {
     return (
-      <div>Hello!!!
+      <div className="app">Hello!!!
         <Input/>
       </div>
     );
   }
 }
+
 export default App;
 
 const wrapper = document.getElementById("app");
