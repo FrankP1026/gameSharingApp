@@ -6,5 +6,7 @@ node_modules
 gameSharingApp/settings.py
 
 # Mac Crap
-*/.DS_Store
+.DS_Store
+.AppleDouble
+.LSOverride
 
