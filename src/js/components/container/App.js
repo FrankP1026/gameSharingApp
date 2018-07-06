@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import '../../../scss/file.scss';
+import '../../../scss/general/general.scss';
 
-import Input from "../presentational/Input";
+import AddGameForm from "./AddGameForm";
+import Header from "../presentational/Header";
+import GameInBank from "../container/GameInBank";
+
 
 class App extends Component {
   constructor() {
@@ -14,8 +17,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">Hello!!!
-        <Input/>
+      <div className="container">
+        <Header />
+        <AddGameForm />
+        <GameInBank />
       </div>
     );
   }
