@@ -35,6 +35,7 @@ class AddGameForm extends Component {
       </div>
     );
   }
+
 }
 
 export default AddGameForm;

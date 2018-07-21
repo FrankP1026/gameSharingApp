@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import '../../../scss/components/header.scss';
 
 
-console.log('hell yea from header')
 const Header = () => {
 	return (
   <header className="header">
