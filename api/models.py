@@ -19,5 +19,14 @@ class UserProfile(models.Model):
         ('O', 'Other')
     )
     user_id = models.ForeignKey('auth.user', on_delete=models.CASCADE, related_name='games')
+    
+    phone_number = models.CharField(max_length=30, null=True, blank=True)
+    
     birthday = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='N')
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+
+    # TODO: validate it by comparing with a pre-defined list
+    country = models.CharField(max_length=30)
+    
