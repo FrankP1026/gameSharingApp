@@ -52,17 +52,19 @@ class GameInBank extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <ul className="">
-          {items.map(item => (
-            <li key={item.id} className="gameInBank-item">
-              <h5>{ item.name }</h5>
-              <p>1 copy, 1 taken, 12 people waiting</p>
-              <p>Description</p>
-              <a onClick={(e)=>this.borrowGame(e)}>I want to borrow it!</a>
-              <a href="#todo">Go to Eshop</a>
-            </li>
-          ))}
-        </ul>
+        <div className="container">
+          <ul className="gameInBank-container">
+            {items.map(item => (
+              <li key={item.id} className="gameInBank-item">
+                <h5>{ item.name }</h5>
+                <p>1 copy, 1 taken, 12 people waiting</p>
+                <p>Description</p>
+                <a onClick={(e)=>this.borrowGame(e)}>I want to borrow it!</a>
+                <a href="#todo">Go to Eshop</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       );
     }
 
