@@ -18,7 +18,8 @@ class UserProfile(models.Model):
         ('F', 'Female'),
         ('O', 'Other')
     )
-    user_id = models.ForeignKey('auth.user', on_delete=models.CASCADE, related_name='games')
+    user_id = models.ForeignKey('auth.user', on_delete=models.CASCADE, related_name='games',
+                                db_index=True)
     
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     
@@ -29,4 +30,6 @@ class UserProfile(models.Model):
 
     # TODO: validate it by comparing with a pre-defined list
     country = models.CharField(max_length=30)
+
+    registered_at = models.DateTimeField(auto_now_add=True)
     
