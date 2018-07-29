@@ -21,7 +21,7 @@ class UserProfile(models.Model):
         ('F', 'Female'),
         ('O', 'Other')
     )
-    user_id = models.OneToOneField(User, on_delete=models.CASCADE, db_index=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, db_index=True, db_column="user_id")
     
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     

@@ -27,10 +27,10 @@ class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
         return UserProfile.objects.create(**validated_data)
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user_id.username')
-    email = serializers.EmailField(source='user_id.email')
-    first_name = serializers.CharField(source='user_id.first_name')
-    last_name = serializers.CharField(source='user_id.last_name')
+    username = serializers.CharField(source='user.username')
+    email = serializers.EmailField(source='user.email')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
 
     class Meta:
         model = UserProfile
