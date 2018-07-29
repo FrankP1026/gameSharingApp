@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+import datetime
 
 
 class Games(models.Model):
@@ -18,18 +21,17 @@ class UserProfile(models.Model):
         ('F', 'Female'),
         ('O', 'Other')
     )
-    user_id = models.ForeignKey('auth.user', on_delete=models.CASCADE, related_name='games',
-                                db_index=True)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE, db_index=True)
     
     phone_number = models.CharField(max_length=30, null=True, blank=True)
     
     birthday = models.DateField()
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='N')
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=50)
 
     # TODO: validate it by comparing with a pre-defined list
-    country = models.CharField(max_length=30)
+    country = models.CharField(max_length=30, null=True, blank=True)
 
-    registered_at = models.DateTimeField(auto_now_add=True)
+    registered_at = models.DateTimeField(default=now)
     

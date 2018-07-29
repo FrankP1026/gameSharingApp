@@ -5,5 +5,8 @@ from .views import *
 
 urlpatterns = [
     path('games/', ListGamesView.as_view(), name="all-games"),
-    path('userProfiles/', ListUserView.as_view(), name="all-users")
+    path('users/', ListUserView.as_view(), name="all-users"),
+    path('userProfilesCreateInternal/', CreateTestUserProfileWithUserIdView.as_view(), 
+         name="user-profile-create-internal"),
+    path('userProfiles/', ListUserProfileView.as_view(), name="all-user-profiles")
 ]
