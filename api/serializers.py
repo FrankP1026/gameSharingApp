@@ -32,6 +32,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
 
+    gender = serializers.CharField(source='get_gender_display')
+
     class Meta:
         model = UserProfile
         fields = (
