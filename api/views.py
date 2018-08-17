@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
@@ -10,12 +11,23 @@ class ListGamesView(generics.ListCreateAPIView):
     queryset = Games.objects.all()
     serializer_class = GamesSerializer
 
+class ListUserView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-class ListUserView(APIView):
+class ListUserProfileView(APIView):
     def get(self, request, format=None):
-        userProfiles = UserProfile.objects.all()
-        serializer = UserProfileSerializer(userProfiles, many=True)
+        user_profiles = UserProfile.objects.all()
+        serializer = UserProfileSerializer(user_profiles, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
         pass
+
+class CreateTestUserProfileWithUserIdView(APIView):
+    def post(self, request, format=None):
+        serializer = UserProfileWithUserIdSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
