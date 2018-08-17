@@ -31,13 +31,23 @@ module.exports = {
             sourceMap: true
           }
         }]
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}  
+          }
+        ]
       }
     ]
   },
   devServer: {
     proxy: {
       '/api' : 'http://127.0.0.1:8000'
-    }
+    },
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebPackPlugin({

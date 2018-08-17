@@ -1,7 +1,13 @@
-.addGame-Container{
+.form-Container{
 	max-width: 800px;
 	margin: 30px auto;
     background-color: snow;
     box-shadow: 11px 11px 30px rgba(0,0,0,.1);
     padding: 20px 40px;
+}
+
+input{
+    padding: 10px 20px;
+    border: 1px solid lightgrey;
+    min-width:300px;
 }
