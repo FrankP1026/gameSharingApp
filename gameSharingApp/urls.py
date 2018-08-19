@@ -16,8 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path, include
 
+#from rest_framework.authtoken import views
+
+from .token_authentication_url import ObtainAuthTokenWithEmail
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path('api/', include('api.urls')),
-    re_path('auth/', include('rest_framework.urls', namespace='rest_framework'))
+    re_path('token-auth/', ObtainAuthTokenWithEmail.as_view())
+    #re_path('token-auth/', views.obtain_auth_token)
+    #re_path('auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
