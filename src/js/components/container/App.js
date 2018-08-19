@@ -13,29 +13,46 @@ import LogInForm from './LogInForm';
 import Header from '../presentational/Header';
 import GameInBank from '../container/GameInBank';
 
-const App = () => (
-  <Router>
-    <div className='app-container'>
+class App extends Component{
+  constructor() {
+    super();
+    this.logOutHandler = this.logOutHandler.bind(this);
+    this.state = {
+      loggedIn : true,
+      userId : 'coral'
+    };
+  }
 
-      <Header />
+  logOutHandler(e){
+    e.preventDefault();
+    console.log('this',this)
+    this.setState((prevState)=>{
+      if (prevState.loggedIn){
+        return { loggedIn: !prevState.loggedIn}
+      } else return null;
+    })
+  } 
 
-      <Route exact path="/" component={Home}/>
-      <Route path="/login" component={LogInForm}/>
+  render(){
+    var logOutHandler = this.logOutHandler;
 
-    </div>
-  </Router>
-)
+    return (
+      <Router>
+        <div className='app-container'>
 
+          <Header {...this.state} logOutHandler = {this.logOutHandler} />
+
+          <Route exact path="/" component={Home}/>
+          <Route path="/login" component={LogInForm}/>
+
+        </div>
+      </Router>
+      )
+  }
+} 
 
 
 class Home extends Component {
-  constructor() {
-    super();
-    this.state = {
-      loggedIn : false,
-      userName : ''
-    };
-  }
 
   render() {
     return (

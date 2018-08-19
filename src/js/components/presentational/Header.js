@@ -8,24 +8,49 @@ import {
 import '../../../scss/components/header.scss';
 import logo from '../../../img/logo.svg'
 
+// function logOut(e){
+//   e.preventDefault();
+//   console.log('logout')
+// }
+const LoggedInMenu = (props) => {
+  // console.log('e',e.logOutHandler)
+  return(
+    <ul className="float-right nav">
+      <li className="nav-item"><Link to="#" data-modal="about-us">How does it work?</Link></li>
+      <li className="nav-item"><Link to="/my-account/">My stuff </Link></li>
+      <li className="nav-item"><Link to="#" onClick={props.logOutHandler}>Log Out</Link></li>
+    </ul>
+  )
+}
 
-const Header = () => {
-	return (
-  <header className="header">
-  	<div className="container">
-      <Link to="/" className="app-logo">
-        <img src={logo} alt="logo"/>
-      </Link>
+const DefaultMenu = () => {
+  return(
+    <ul className="float-right nav">
+      <li className="nav-item"><Link to="#" data-modal="about-us">How does it work?</Link></li>
+      <li className="nav-item"><Link to="/login">Log In </Link></li>
+    </ul>
+  )
+}
 
-      <span >Hi <span>User</span>, Share your game! </span>
-      <ul className="float-right nav">
-            <li className="nav-item"><Link to="#" data-modal="aboutus">How does it work?</Link></li>
-            {/*<li className="nav-item"><Link to="/my-stuff">My stuff </Link></li>*/}
-            {/*<li className="nav-item"><Link to="/my-account">My account </Link></li>*/}
-            <li className="nav-item"><Link to="/login">Log in </Link></li>
-      </ul>
-    </div>
-  </header>
+
+const Header = (props) => {
+  return (
+    <header className="header">
+    	<div className="container">
+        <Link to="/" className="app-logo">
+          <img src={logo} alt="logo"/>
+        </Link>
+             
+        <span>Hi <span>{ props.loggedIn  ? props.userId : 'there'}</span>, Share your game!</span>
+
+        {
+          props.loggedIn ? 
+            <LoggedInMenu logOutHandler={props.logOutHandler}/> 
+            : <DefaultMenu />
+        }
+              
+      </div>
+    </header>
   )
 };
 
