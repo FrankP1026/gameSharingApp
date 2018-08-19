@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
@@ -16,6 +16,8 @@ class ListUserView(generics.ListAPIView):
     serializer_class = UserSerializer
 
 class ListUserProfileView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     def get(self, request, format=None):
         user_profiles = UserProfile.objects.all()
         serializer = UserProfileSerializer(user_profiles, many=True)
