@@ -10,11 +10,13 @@ class GamesSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # TODO: only allow authorized users to view a user's group?
     groups = serializers.StringRelatedField(many=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'groups')
+        fields = ('username', 'email', 'first_name', 'last_name', 'groups', 'password')
 
 # only for testing, should never use it to create user profile
 class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
@@ -34,6 +36,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     gender = serializers.CharField(source='get_gender_display')
 
+    password = serializers.CharField(source='user.password', write_only=True)
+
     class Meta:
         model = UserProfile
         fields = (
@@ -41,11 +45,31 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'last_name',
+            'password',
             'gender',
             'phone_number',
             'birthday',
             'address',
             'city',
             'country',
-            'registered_at'
+            'registered_at',
         )
+    
+    def create(self, validated_data):
+        #username = validated_data.pop('username')
+        #email = validated_data.pop('email')
+        #first_name = validated_data.pop('first_name')
+        #last_name = validated_data.pop('last_name')
+        #password
+
+        user = User.objects.create_user(username=validated_data['username'],
+                                        email=validated_data['email'],
+                                        first_name=validated_data['first_name'],
+                                        last_name=validated_data['last_name'],
+                                        password=validated_data['password'])
+        if not user:
+            return None
+        
+        return UserProfile.objects.create(user=user, **validated_data)
+
+
