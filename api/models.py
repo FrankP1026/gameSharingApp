@@ -41,7 +41,8 @@ class UserProfile(models.Model):
 
     registered_at = models.DateTimeField(default=now)
 
-# Make sure user email is unique
+# Make sure user email is unique. This is commented out as the validation is ensured on DB level.
+'''
 @receiver(pre_save, sender=User)
 def user_pre_save(sender, instance, **kwargs):
     email = instance.email
@@ -49,6 +50,7 @@ def user_pre_save(sender, instance, **kwargs):
 
     if not email: raise ValidationError("email required")
     if sender.objects.filter(email=email).exclude(username=username).count(): raise ValidationError("email needs to be unique")
+'''
 
 # Create user's authentication token
 @receiver(post_save, sender=User)
