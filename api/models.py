@@ -1,6 +1,7 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.dispatch import receiver
 from django.utils.timezone import now
 
@@ -39,7 +40,19 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=30, null=True, blank=True)
 
     registered_at = models.DateTimeField(default=now)
-    
+
+# Make sure user email is unique. This is commented out as the validation is ensured on DB level.
+'''
+@receiver(pre_save, sender=User)
+def user_pre_save(sender, instance, **kwargs):
+    email = instance.email
+    username = instance.username
+
+    if not email: raise ValidationError("email required")
+    if sender.objects.filter(email=email).exclude(username=username).count(): raise ValidationError("email needs to be unique")
+'''
+
+# Create user's authentication token
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:

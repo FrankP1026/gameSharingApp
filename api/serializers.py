@@ -10,11 +10,13 @@ class GamesSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    # TODO: only allow authorized users to view a user's group?
     groups = serializers.StringRelatedField(many=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'groups')
+        fields = ('username', 'email', 'first_name', 'last_name', 'groups', 'password')
 
 # only for testing, should never use it to create user profile
 class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
@@ -22,7 +24,6 @@ class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ('user_id', 'gender', 'phone_number', 'birthday', 'registered_at')
     
-    # TODO: need to validate if auth.user exists
     def create(self, validated_data):
         return UserProfile.objects.create(**validated_data)
 
@@ -34,6 +35,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     gender = serializers.CharField(source='get_gender_display')
 
+    password = serializers.CharField(source='user.password', write_only=True)
+
     class Meta:
         model = UserProfile
         fields = (
@@ -41,11 +44,32 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'last_name',
+            'password',
             'gender',
             'phone_number',
             'birthday',
             'address',
             'city',
             'country',
-            'registered_at'
+            'registered_at',
         )
+    
+    def create(self, validated_data):
+        usr = validated_data.pop('user')
+
+        # TODO: this manual operation is really not desirable, 
+        # see if there is a way to create user without doing this
+        gender = validated_data.pop('get_gender_display')
+
+        user = User.objects.create_user(username=usr['username'],
+                                        email=usr['email'],
+                                        first_name=usr['first_name'],
+                                        last_name=usr['last_name'],
+                                        password=usr['password'])
+        if not user:
+            return None
+        
+        return UserProfile.objects.create(user=user, gender=gender, **validated_data)
+    
+
+
