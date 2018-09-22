@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.db import transaction
+
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -35,6 +37,7 @@ class CreateTestUserProfileWithUserIdView(APIView):
 
 
 class UserRegistrationView(APIView):
+    @transaction.atomic
     def post(self, request, format=None):
         user_serializer = UserSerializer(data=request.data)
         if not user_serializer.is_valid():

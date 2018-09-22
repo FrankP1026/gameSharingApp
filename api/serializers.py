@@ -24,7 +24,6 @@ class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ('user_id', 'gender', 'phone_number', 'birthday', 'registered_at')
     
-    # TODO: need to validate if auth.user exists
     def create(self, validated_data):
         return UserProfile.objects.create(**validated_data)
 
@@ -56,20 +55,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
         )
     
     def create(self, validated_data):
-        #username = validated_data.pop('username')
-        #email = validated_data.pop('email')
-        #first_name = validated_data.pop('first_name')
-        #last_name = validated_data.pop('last_name')
-        #password
+        usr = validated_data.pop('user')
 
-        user = User.objects.create_user(username=validated_data['username'],
-                                        email=validated_data['email'],
-                                        first_name=validated_data['first_name'],
-                                        last_name=validated_data['last_name'],
-                                        password=validated_data['password'])
+        # TODO: this manual operation is really not desirable, 
+        # see if there is a way to create user without doing this
+        gender = validated_data.pop('get_gender_display')
+
+        user = User.objects.create_user(username=usr['username'],
+                                        email=usr['email'],
+                                        first_name=usr['first_name'],
+                                        last_name=usr['last_name'],
+                                        password=usr['password'])
         if not user:
             return None
         
-        return UserProfile.objects.create(user=user, **validated_data)
+        return UserProfile.objects.create(user=user, gender=gender, **validated_data)
+    
 
 
