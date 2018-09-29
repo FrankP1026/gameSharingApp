@@ -18,8 +18,8 @@ class App extends Component{
     super();
     this.logOutHandler = this.logOutHandler.bind(this);
     this.state = {
-      loggedIn : true,
-      userId : 'coral'
+      loggedIn : false,
+      userId : null
     };
   }
 
