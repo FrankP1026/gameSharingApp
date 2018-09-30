@@ -37,10 +37,10 @@ const Header = (props) => {
           <img src={logo} alt="logo"/>
         </Link>
              
-        <span>Hi <span>{ props.loggedIn  ? props.userId : 'there'}</span>, Share your game!</span>
+        <span>Hi <span>{ props.isLoggedIn  ? props.userId : 'there'}</span>, Share your game!</span>
 
         {
-          props.loggedIn ? 
+          props.isLoggedIn ? 
             <LoggedInMenu logOutHandler={props.logOutHandler}/> 
             : <DefaultMenu />
         }

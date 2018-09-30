@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  Link
+} from 'react-router-dom';
 
 class LogInForm extends Component {
   constructor() {
@@ -26,6 +29,8 @@ class LogInForm extends Component {
 
   logIn(e){
     e.preventDefault();
+    const userNameOrEmail = this.state.username_or_email;
+    const password = this.state.password;
 
     fetch("http://localhost:8080/api/token-auth/", {
       method: 'POST',
@@ -34,14 +39,16 @@ class LogInForm extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username_or_email: this.state.username_or_email,
-        password: this.state.password
+        username_or_email: userNameOrEmail,
+        password: password
       })
     })
       .then(res => this.handleErrors(res))
       .then(res => res.json())
       .then(
         (result) => {
+          // logged-in props needs to be updated as a global state! 
+          this.props.logInHandler(userNameOrEmail);
           this.setState({
             isLoaded: true,
             token: result.token
@@ -70,21 +77,32 @@ class LogInForm extends Component {
 
   render() {
     const { error, isLoaded } = this.state;
-    return (
-      <div className='form-Container'>
-        <form>
-          <div className="form-group">
-            <input type="text" name="user_name" placeholder="User name or Email address" onChange={this.updateUserName.bind(this)}/>
-          </div>
-          <div className="form-group">
-            <input type="text" name="password" placeholder="password" onChange={this.updatePassword.bind(this)}/>
-          </div>
-            <p><small className='text-error'> {this.state.error ? this.state.error : ""} </small></p>
+    if(this.props.isLoggedIn){
+      return (
+        <div className='form-Container'>
+          <p>Success! click <Link to="/">here</Link> to go back home...</p>
+        </div>
+      )
+    } else {
+      return (
+        <div className='form-Container'>
+          <form>
+            <div className="form-group">
+              <input type="text" name="user_name" placeholder="User name or Email address" onChange={this.updateUserName.bind(this)}/>
+            </div>
+            <div className="form-group">
+              <input type="password" name="password" placeholder="password" onChange={this.updatePassword.bind(this)}/>
+            </div>
 
-          <input type="submit" value="Log In" onClick={this.logIn.bind(this)}/>
-        </form>
-      </div>
-    );
+            { this.state.error ? 
+              <p><small className='text-error'> { this.state.error } </small></p> : ""
+            }
+
+            <input type="submit" value="Log In" onClick={this.logIn.bind(this)}/>
+          </form>
+        </div>
+      );
+    }
   }
 }
 

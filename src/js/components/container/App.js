@@ -18,7 +18,7 @@ class App extends Component{
     super();
     this.logOutHandler = this.logOutHandler.bind(this);
     this.state = {
-      loggedIn : false,
+      isLoggedIn : false,
       userId : null
     };
   }
@@ -27,14 +27,31 @@ class App extends Component{
     e.preventDefault();
     console.log('this',this)
     this.setState((prevState)=>{
-      if (prevState.loggedIn){
-        return { loggedIn: !prevState.loggedIn}
+      if (prevState.isLoggedIn){
+        return { 
+          isLoggedIn: !prevState.isLoggedIn,
+          userId: null
+
+        }
       } else return null;
     })
   } 
 
+  logInHandler(userNameOrEmail) {
+    console.log('this',this)
+    this.setState((prevState)=>{
+      if (!prevState.loggedIn){
+
+        return { 
+          isLoggedIn: !prevState.isLoggedIn ,
+          userId: userNameOrEmail
+        }
+      } else return null;
+    })
+  }
+
   render(){
-    var logOutHandler = this.logOutHandler;
+    const logOutHandler = this.logOutHandler;
 
     return (
       <Router>
@@ -43,7 +60,10 @@ class App extends Component{
           <Header {...this.state} logOutHandler = {this.logOutHandler} />
 
           <Route exact path="/" component={Home}/>
-          <Route path="/login" component={LogInForm}/>
+          <Route 
+            path="/login" 
+            render={() => <LogInForm {...this.state} logInHandler = {this.logInHandler.bind(this)}/>}
+          />
 
         </div>
       </Router>
