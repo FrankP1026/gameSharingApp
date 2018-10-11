@@ -14,6 +14,8 @@ class ListGamesView(generics.ListCreateAPIView):
     serializer_class = GamesSerializer
 
 class ListUserView(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
