@@ -10,4 +10,11 @@ input{
     padding: 10px 20px;
     border: 1px solid lightgrey;
     min-width:300px;
+    &:hover,&:focus{
+        border-color: grey;
+    }
+}
+
+.text-error{
+    color:red;
 }

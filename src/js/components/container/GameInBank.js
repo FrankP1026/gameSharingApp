@@ -20,7 +20,6 @@ class GameInBank extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
           this.setState({
             isLoaded: true,
             items: result
@@ -53,6 +52,7 @@ class GameInBank extends Component {
     } else {
       return (
         <div className="container">
+          <p className="text-center">Here is the game that's available at the moment</p>
           <ul className="gameInBank-container">
             {items.map(item => (
               <li key={item.id} className="gameInBank-item">
