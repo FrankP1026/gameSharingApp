@@ -28,6 +28,7 @@ class UserProfileWithUserIdSerializer(serializers.ModelSerializer):
         return UserProfile.objects.create(**validated_data)
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    user_id = serializers.CharField(source='user.id', required=False)
     username = serializers.CharField(source='user.username')
     email = serializers.EmailField(source='user.email')
     first_name = serializers.CharField(source='user.first_name')
@@ -40,6 +41,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = (
+            'user_id',
             'username',
             'email',
             'first_name',
@@ -71,5 +73,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
         
         return UserProfile.objects.create(user=user, gender=gender, **validated_data)
     
-
-

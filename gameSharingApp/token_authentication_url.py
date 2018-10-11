@@ -9,6 +9,9 @@ from django.utils.translation import ugettext_lazy as _
 
 from .auth_backends import EmailBackend
 
+from api.models import UserProfile
+from api.serializers import UserProfileSerializer
+
 
 class AuthTokenSerializerWithEmail(serializers.Serializer):
     username_or_email = serializers.CharField(label=_("Username or Email address"))
@@ -52,4 +55,6 @@ class ObtainAuthTokenWithEmail(APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key})
+        user_profile = UserProfile.objects.get(user=user)
+        user_profile_serializer = UserProfileSerializer(user_profile)
+        return Response({'token': token.key, 'user_profile': user_profile_serializer.data})
