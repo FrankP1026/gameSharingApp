@@ -19,7 +19,8 @@ class App extends Component{
     this.logOutHandler = this.logOutHandler.bind(this);
     this.state = {
       isLoggedIn : false,
-      userId : null
+      userId : null,
+      userAddedGame: null
     };
   }
 
@@ -31,7 +32,6 @@ class App extends Component{
         return { 
           isLoggedIn: !prevState.isLoggedIn,
           userId: null
-
         }
       } else return null;
     })
@@ -41,13 +41,17 @@ class App extends Component{
     console.log('this',this)
     this.setState((prevState)=>{
       if (!prevState.loggedIn){
-
         return { 
           isLoggedIn: !prevState.isLoggedIn ,
           userId: userNameOrEmail
         }
       } else return null;
     })
+  }
+
+  updateGames(game){
+    console.log('adding game! Full list:', games)
+    // TODO: Update state only to trigger re-render with the added game. 
   }
 
   render(){
@@ -59,7 +63,10 @@ class App extends Component{
 
           <Header {...this.state} logOutHandler = {this.logOutHandler} />
 
-          <Route exact path="/" component={Home}/>
+          <Route exact 
+            path="/" 
+            render = { () => <Home updateGames = {this.updateGames.bind(this)}/> }
+          />
           <Route 
             path="/login" 
             render={() => <LogInForm {...this.state} logInHandler = {this.logInHandler.bind(this)}/>}
@@ -77,7 +84,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <AddGameForm />
+        <AddGameForm updateGames = {this.props.updateGames}/>
         <GameInBank />
       </div>
     );
