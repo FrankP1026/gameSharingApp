@@ -50,3 +50,12 @@ class UserRegistrationView(APIView):
             profile_serializer.save()
             return Response(profile_serializer.data, status=status.HTTP_201_CREATED)
         return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileView(APIView):
+    def get(self, request, format=None):
+        print(request.query_params)
+        user_id = request.query_params['user_id']
+        user_profile = UserProfile.objects.get(user_id=user_id)
+        serializer = UserProfileSerializer(user_profile)
+        return Response(serializer.data)

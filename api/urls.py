@@ -9,5 +9,6 @@ urlpatterns = [
     path('userProfilesCreateInternal/', CreateTestUserProfileWithUserIdView.as_view(), 
          name="user-profile-create-internal"),
     path('userProfiles/', ListUserProfileView.as_view(), name="all-user-profiles"),
-    path('userRegistration/', UserRegistrationView.as_view(), name='user-registration')
+    path('userRegistration/', UserRegistrationView.as_view(), name='user-registration'),
+    path('userProfile/', UserProfileView.as_view(), name='user-profile')
 ]
