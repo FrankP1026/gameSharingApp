@@ -27,7 +27,6 @@ class AddGameForm extends Component {
   }
 
   addGame(e) {
-    console.log('adding game...', this.state.gameName);
     const gameName = this.state.gameName;
 
     e.preventDefault();
@@ -47,8 +46,7 @@ class AddGameForm extends Component {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log("res:", result)
-          this.props.updateGames(result);
+          this.props.printAddedGame(result);
         }
       )
       .catch(e => {

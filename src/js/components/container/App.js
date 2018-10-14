@@ -49,9 +49,18 @@ class App extends Component{
     })
   }
 
-  updateGames(game){
-    console.log('adding game! Full list:', games)
-    // TODO: Update state only to trigger re-render with the added game. 
+  printAddedGame(addedGame){
+    this.setState((prevState)=>{
+      if(prevState.userAddedGame !== null){
+        return {
+          userAddedGame: [addedGame, ...prevState.userAddedGame ]
+        }
+      } else {
+        return {
+          userAddedGame : [addedGame]
+        }
+      }
+    })
   }
 
   render(){
@@ -65,7 +74,11 @@ class App extends Component{
 
           <Route exact 
             path="/" 
-            render = { () => <Home updateGames = {this.updateGames.bind(this)}/> }
+            render = { () => <Home 
+              printAddedGame = {this.printAddedGame.bind(this)} 
+              userAddedGame = {this.state.userAddedGame}
+              /> 
+            }
           />
           <Route 
             path="/login" 
@@ -84,8 +97,12 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <AddGameForm updateGames = {this.props.updateGames}/>
-        <GameInBank />
+        <AddGameForm 
+          printAddedGame = {this.props.printAddedGame}
+        />
+        <GameInBank 
+          userAddedGame = {this.props.userAddedGame}
+        />
       </div>
     );
   }
