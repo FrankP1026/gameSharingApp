@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.db import transaction
 
-from rest_framework import generics, permissions, status
+from rest_framework import authentication, generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
@@ -54,8 +54,23 @@ class UserRegistrationView(APIView):
 
 class UserProfileView(APIView):
     def get(self, request, format=None):
-        print(request.query_params)
         user_id = request.query_params['user_id']
         user_profile = UserProfile.objects.get(user_id=user_id)
         serializer = UserProfileSerializer(user_profile)
         return Response(serializer.data)
+
+class UpdateUserProfileView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    @transaction.atomic
+    def put(self, request, format=None):
+        data = request.data
+        print(data)
+
+        return Response({"updated": True}, status=status.HTTP_200_OK)
+
+
+# Need to make sure the current password matches
+class UpdateUserPasswordView(APIView):
+    pass
