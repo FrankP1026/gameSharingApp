@@ -9,7 +9,7 @@ class GameInBank extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      items: []
+      existedItems: []
     };
   }
 
@@ -20,9 +20,10 @@ class GameInBank extends Component {
       .then(res => res.json())
       .then(
         (result) => {
+
           this.setState({
             isLoaded: true,
-            items: result
+            existedItems: result.reverse()
           });
         },
         // Note: it's important to handle errors here
@@ -37,13 +38,21 @@ class GameInBank extends Component {
       )
   }
 
-  borrowGame(e) {
-    console.log('borrowing Mario Odyssy')
+  borrowGame(e,gameName) {
+    console.log(gameName)
     e.preventDefault();
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { error, isLoaded, existedItems } = this.state;
+    const addedGames = this.props.userAddedGame; 
+    let printItems;
+    if(addedGames !== null){
+      printItems = addedGames.concat(existedItems);
+    } else {
+      printItems = existedItems;
+    }
+
     
     if (error) {
       return <div>Error: {error.message}</div>;
@@ -54,13 +63,13 @@ class GameInBank extends Component {
         <div className="container">
           <p className="text-center">Here is the game that's available at the moment</p>
           <ul className="gameInBank-container">
-            {items.map(item => (
+            {printItems.map(item => (
               <li key={item.id} className="gameInBank-item">
                 <h5>{ item.name }</h5>
                 <p>1 copy, 1 taken, 12 people waiting</p>
                 <p>Description</p>
-                <a onClick={(e)=>this.borrowGame(e)}>I want to borrow it!</a>
-                <a href="#todo">Go to Eshop</a>
+                <a href="#todo" onClick={(e)=>this.borrowGame(e,item.name)}>I want to borrow it!</a>
+                <a href="#todo" className="float-right">Go to Eshop</a>
               </li>
             ))}
           </ul>

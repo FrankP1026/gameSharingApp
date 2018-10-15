@@ -43,6 +43,8 @@ class LogInForm extends Component {
         password: password
       })
     })
+      // Need to handle 404/500 separately with fetch 
+      // Ref: https://www.tjvantoll.com/2015/09/13/fetch-and-errors/
       .then(res => this.handleErrors(res))
       .then(res => res.json())
       .then(
