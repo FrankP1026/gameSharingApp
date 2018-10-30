@@ -28,6 +28,7 @@ class AddGameForm extends Component {
 
   addGame(e) {
     const gameName = this.state.gameName;
+    document.getElementById('add-game-form').reset();
 
     e.preventDefault();
     fetch("http://localhost:8080/api/games/", {
@@ -62,7 +63,7 @@ class AddGameForm extends Component {
         <h5>
           Have a game to share? Add a game
         </h5>
-            <form action="/">
+            <form action="/"  id="add-game-form">
               <div className="form-group">
   	      			<p>Game name:</p>
   		  				<input type="text" name="game-name" onChange={(e)=>this.updateGameName(e)}/>

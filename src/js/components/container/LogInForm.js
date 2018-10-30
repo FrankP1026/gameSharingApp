@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import {
-  Link
+  Link,withRouter
 } from 'react-router-dom';
+
+
 
 class LogInForm extends Component {
   constructor() {
     super();
     this.state = {
-
       username_or_email: null,
       password: null,
       error: null,
       isLoaded: false,
-      token: null
+      token: null,
+      countDownToHome: false,
+      timer: null
     };
   }
 
@@ -57,6 +60,29 @@ class LogInForm extends Component {
           });
         }
       )
+      .then(() => {
+          console.log('leaping....')
+          this.setState({ 
+            countDownToHome: true,
+            timer: 2
+          })
+
+          let countDownHandler = setInterval(()=>{
+            this.setState((prevState)=>{
+              if(prevState.timer > 0){ 
+                return { timer : prevState.timer - 1 }
+              } else {
+                clearInterval(countDownHandler)
+              }
+            })
+          },1000)
+
+          setTimeout(()=> {
+            this.props.history.push('/')
+            clearInterval(countDownHandler);
+          },3000)
+        }
+      )
       .catch(e => {
         this.setState({
           isLoaded: true,
@@ -64,6 +90,7 @@ class LogInForm extends Component {
         });
       })
   }
+    
 
   updateUserName(e){
     this.setState({
@@ -79,10 +106,10 @@ class LogInForm extends Component {
 
   render() {
     const { error, isLoaded } = this.state;
-    if(this.props.isLoggedIn){
+    if(this.state.countDownToHome){
       return (
         <div className='form-Container'>
-          <p>Success! click <Link to="/">here</Link> to go back home...</p>
+          <p>Success! click <Link to="/">here</Link> to go back home in {this.state.timer} seconds...</p>
         </div>
       )
     } else {
@@ -108,4 +135,4 @@ class LogInForm extends Component {
   }
 }
 
-export default LogInForm;
+export default withRouter(LogInForm);

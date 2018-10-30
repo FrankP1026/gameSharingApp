@@ -38,7 +38,7 @@ class App extends Component{
   } 
 
   logInHandler(userNameOrEmail) {
-    console.log('this',this)
+    console.log("Logged in!!", 'this',this)
     this.setState((prevState)=>{
       if (!prevState.loggedIn){
         return { 
@@ -51,7 +51,8 @@ class App extends Component{
 
   printAddedGame(addedGame){
     this.setState((prevState)=>{
-      if(prevState.userAddedGame !== null){
+
+      if(prevState.userAddedGame){
         return {
           userAddedGame: [addedGame, ...prevState.userAddedGame ]
         }
@@ -82,7 +83,9 @@ class App extends Component{
           />
           <Route 
             path="/login" 
-            render={() => <LogInForm {...this.state} logInHandler = {this.logInHandler.bind(this)}/>}
+            render={() => <LogInForm 
+              logInHandler = {this.logInHandler.bind(this)}/>}
+              {...this.state} 
           />
 
         </div>
