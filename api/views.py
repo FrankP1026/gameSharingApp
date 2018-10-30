@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.db import transaction
 
 from rest_framework import authentication, generics, permissions, status
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
@@ -65,10 +66,35 @@ class UpdateUserProfileView(APIView):
 
     @transaction.atomic
     def put(self, request, format=None):
-        data = request.data
-        print(data)
+        data = request.data.copy()
+        print(request.user.id)
 
-        return Response({"updated": True}, status=status.HTTP_200_OK)
+        user_id = int(data["user_id"])
+
+        # TODO: maybe use another exception that better represents the error
+        if user_id != request.user.id:
+            raise APIException("Can only update your own profile")
+        
+        # We do not want to update password here
+        data.pop("password", None)
+
+        user = User.objects.get(id=user_id)
+        user_serializer = UserSerializer(user, data=data, partial=True)
+        if not user_serializer.is_valid():
+            return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user_serializer.save()
+        print(user_serializer.data)
+
+        user_profile = UserProfile.objects.get(user_id=user_id)
+
+        # TODO: what's the best way of updating user profile? create a custom method?
+        profile_serializer = UserProfileSerializer(user_profile, data=data, partial=True)
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response(profile_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Need to make sure the current password matches
