@@ -73,3 +73,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
         
         return UserProfile.objects.create(user=user, gender=gender, **validated_data)
     
+    def update(self, instance, validated_data):
+        instance.gender = validated_data.pop('get_gender_display', instance.gender)
+        instance.phone_number = validated_data.pop('phone_number', instance.phone_number)
+        instance.birthday = validated_data.pop('birthday', instance.birthday)
+
+        instance.address = validated_data.pop('address', instance.address)
+        instance.city = validated_data.pop('city', instance.city)
+        instance.country = validated_data.pop('country', instance.country)
+
+        instance.save()
+        return instance
+
+        
+
+    

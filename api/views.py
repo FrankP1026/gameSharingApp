@@ -50,6 +50,7 @@ class UserRegistrationView(APIView):
         if profile_serializer.is_valid():
             profile_serializer.save()
             return Response(profile_serializer.data, status=status.HTTP_201_CREATED)
+
         return Response(profile_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -67,7 +68,6 @@ class UpdateUserProfileView(APIView):
     @transaction.atomic
     def put(self, request, format=None):
         data = request.data.copy()
-        print(request.user.id)
 
         user_id = int(data["user_id"])
 
@@ -84,7 +84,6 @@ class UpdateUserProfileView(APIView):
             return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user_serializer.save()
-        print(user_serializer.data)
 
         user_profile = UserProfile.objects.get(user_id=user_id)
 
