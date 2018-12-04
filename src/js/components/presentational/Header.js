@@ -13,7 +13,7 @@ const LoggedInMenu = (props) => {
   return(
     <ul className="float-right nav">
       <li className="nav-item"><Link to="#" data-modal="about-us">How does it work?</Link></li>
-      <li className="nav-item"><Link to="/my-account/">My stuff </Link></li>
+      <li className="nav-item"><Link to="/my-account">My stuff </Link></li>
       <li className="nav-item"><Link to="#" onClick={props.logOutHandler}>Log Out</Link></li>
     </ul>
   )

@@ -53,7 +53,7 @@ class LogInForm extends Component {
       .then(
         (result) => {
           // logged-in props needs to be updated as a global state! 
-          this.props.logInHandler(userNameOrEmail);
+          this.props.logInHandler(userNameOrEmail, result.token);
           this.setState({
             isLoaded: true,
             token: result.token
@@ -80,7 +80,7 @@ class LogInForm extends Component {
           setTimeout(()=> {
             this.props.history.push('/')
             clearInterval(countDownHandler);
-          },3000)
+          },2000)
         }
       )
       .catch(e => {
